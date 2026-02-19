@@ -13,7 +13,7 @@
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --accent: #38bdf8; 
-            --today-highlight: #f59e0b; /* اللون البرتقالي المميز لليوم والشهر الحالي */
+            --today-highlight: #f59e0b; 
             --border-color: rgba(255,255,255,0.1);
             --border-width: 2px;
             --modal-bg: #1e293b;
@@ -27,7 +27,7 @@
             --text-main: #fff;
             --text-sub: #cbd5e1;
             --accent: #fb923c; 
-            --today-highlight: #fcd34d; /* برتقالي مصفر للطاقة */
+            --today-highlight: #fcd34d; 
             --border-color: rgba(255,255,255,0.15);
             --modal-bg: #4c1d95;
             --table-border: rgba(255,255,255,0.3);
@@ -40,7 +40,7 @@
             --text-main: #ecfdf5;
             --text-sub: #a7f3d0;
             --accent: #86efac; 
-            --today-highlight: #f59e0b; /* برتقالي دافئ للطبيعة */
+            --today-highlight: #f59e0b; 
             --border-color: rgba(255,255,255,0.1);
             --modal-bg: #166534;
             --table-border: rgba(255,255,255,0.2);
@@ -74,7 +74,6 @@
         .live-time { font-size: 1.8rem; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
         .live-date { font-size: 0.85rem; color: var(--text-sub); }
 
-        /* أزرار الهيدر */
         .controls-bar { display: flex; justify-content: space-between; padding: 10px 20px; align-items: center; margin-top: 5px;}
         .icon-btn-top { 
             background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); 
@@ -83,51 +82,56 @@
         }
         .icon-btn-top:active { transform: scale(0.9); }
         
-        /* --- التقويم المطور (Month Wrapper) --- */
+        /* --- التقويم المطور --- */
         .calendar-container { padding: 0 10px; margin-top: 15px; }
         .calendar-wrapper { transition: opacity 0.3s ease, transform 0.3s ease; }
         .calendar-wrapper.fade { opacity: 0; transform: scale(0.97); }
+        
+        .list-view-block {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px;
+            padding: 15px 10px; margin-bottom: 30px; backdrop-filter: blur(5px);
+        }
         
         .month-nav {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
             background: var(--bg-card); padding: 10px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid var(--border-color);
         }
         .nav-btn { background: none; border: none; color: var(--accent); font-size: 1.5rem; cursor: pointer; font-weight: bold; width: 50px; text-align: center; }
+        
+        /* تنسيق اسم الشهر الميلادي والهجري */
         .month-title { font-size: 1.3rem; font-weight: bold; text-align: center; flex: 1; }
+        .month-title-header { text-align: center; font-size: 1.4rem; font-weight: bold; margin-bottom: 15px; color: var(--text-main); }
+        .month-title-header.is-current { color: var(--today-highlight); font-size: 1.5rem; }
+        
+        .hijri-subtitle { display: block; font-size: 0.85rem; color: var(--accent); opacity: 0.8; font-weight: normal; margin-top: 4px; }
+        .is-current .hijri-subtitle { color: var(--text-main); opacity: 0.9; } /* ليكون أوضح في الشهر الحالي */
 
-        /* حاوية الشهر (تستخدم للإطار المميز) */
+        /* حاوية الشهر (تستخدم للإطار والتظليل) */
         .month-wrapper {
-            background: var(--bg-card); 
-            border: var(--border-width) solid var(--border-color); 
-            border-radius: 20px;
-            padding: 15px 10px; 
-            margin-bottom: 30px; 
-            backdrop-filter: blur(5px);
-            transition: border-color 0.4s, box-shadow 0.4s;
+            background: var(--bg-card); border: var(--border-width) solid var(--border-color); 
+            border-radius: 20px; padding: 15px 10px; margin-bottom: 30px; 
+            backdrop-filter: blur(5px); transition: border-color 0.4s, box-shadow 0.4s, opacity 0.4s, filter 0.4s;
         }
         .month-wrapper.is-current {
             border-color: var(--today-highlight);
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15); /* توهج برتقالي ناعم للمربع كامل */
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
         }
         
-        .month-title-header {
-            text-align: center; font-size: 1.4rem; font-weight: bold; margin-bottom: 15px; color: var(--text-main);
+        /* تظليل الأشهر السابقة (الجديد) */
+        .month-wrapper.past-month {
+            opacity: 0.45; /* مظلم ومطفي */
+            filter: grayscale(40%) brightness(0.8);
         }
-        .month-title-header.is-current { color: var(--today-highlight); font-size: 1.5rem; }
+        .month-wrapper.past-month:hover, .month-wrapper.past-month:active {
+            opacity: 0.8; /* يضيء قليلاً عند التفاعل معه */
+            filter: grayscale(0%) brightness(1);
+        }
 
-        /* المحاذاة الدقيقة بالـ minmax */
-        .weekdays { 
-            display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); 
-            text-align: center; font-weight: bold; font-size: 0.85rem; color: var(--text-sub); margin-bottom: 10px; 
-        }
-        .days-grid { 
-            display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; 
-        }
+        .weekdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; font-weight: bold; font-size: 0.85rem; color: var(--text-sub); margin-bottom: 10px; }
+        .days-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
 
         .day-cell {
-            background: rgba(0,0,0,0.2); 
-            border: var(--border-width) solid var(--border-color);
-            border-radius: 12px;
+            background: rgba(0,0,0,0.2); border: var(--border-width) solid var(--border-color); border-radius: 12px;
             aspect-ratio: 1 / 1; display: flex; flex-direction: column; justify-content: space-between;
             padding: 5px; cursor: pointer; position: relative;
         }
@@ -140,15 +144,13 @@
         .color-indicator { position: absolute; top: 6px; left: 6px; width: 8px; height: 8px; border-radius: 50%; display: none; }
         .has-tasks { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: var(--text-main); border-radius: 50%; display: none; }
 
-        /* تأثير النبض البرتقالي لليوم الحالي فقط */
         @keyframes breathe-today {
             0% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.3); }
             50% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.6); }
             100% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.3); }
         }
         .day-cell.today {
-            border-color: var(--today-highlight) !important; 
-            background: rgba(245, 158, 11, 0.15) !important;
+            border-color: var(--today-highlight) !important; background: rgba(245, 158, 11, 0.15) !important;
             animation: breathe-today 3s infinite ease-in-out;
         }
 
@@ -158,12 +160,11 @@
             background: var(--accent); color: var(--bg-main); border: none;
             padding: 10px 25px; border-radius: 30px; font-weight: bold; font-size: 0.95rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 1000;
-            opacity: 0; pointer-events: none;
-            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
+            opacity: 0; pointer-events: none; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
         }
         .fab-today.visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
 
-        /* --- النافذة المنبثقة الناعمة --- */
+        /* --- النافذة المنبثقة --- */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0); z-index: 5000; align-items: flex-end; transition: background 0.4s ease;
@@ -327,18 +328,15 @@
     </div>
 
     <script>
-        // --- تهيئة الذاكرة والمتغيرات ---
+        // المتغيرات الأساسية
         let currentDisplayedDate = new Date();
         const today = new Date();
         let db = JSON.parse(localStorage.getItem('cal2026_db')) || {};
-        
-        // جلب وضع العرض المحفوظ من الذاكرة (السر الذي يمنع رجوعه للشكل الأول)
         let viewMode = localStorage.getItem('cal2026_viewMode') || 'single'; 
-        
         let activeDayKey = null; 
         let activeColor = '';
         let currentTableData = null;
-        let isInitialLoad = true; // لتتبع التحميل الأول والانتقال التلقائي
+        let isInitialLoad = true;
 
         const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 
@@ -364,7 +362,7 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        // --- الطقس عبر الـ IP (يتجاوز الحظر) ---
+        // --- الطقس عبر الـ IP ---
         async function initWeather() {
             const fallbackCity = () => {
                 document.getElementById('cityName').innerText = `📍 تبوك`;
@@ -402,11 +400,21 @@
 
         // --- محرك التقويم ---
         const getDateKey = (y, m, d) => `${y}-${m+1}-${d}`;
-        function getHijriFormat(date) { return new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {day: 'numeric', month: 'long', year:'numeric'}).format(date); }
+        
+        // دالة سحرية لمعرفة أسماء الأشهر الهجرية المتداخلة في شهر ميلادي
+        function getHijriMonthsForGregorian(year, month) {
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {month: 'long'});
+            const m1 = formatter.format(firstDay);
+            const m2 = formatter.format(lastDay);
+            if (m1 === m2) return m1;
+            return `${m1} - ${m2}`;
+        }
 
         function toggleViewMode() {
             viewMode = viewMode === 'single' ? 'list' : 'single';
-            localStorage.setItem('cal2026_viewMode', viewMode); // حفظ وضع العرض في الذاكرة
+            localStorage.setItem('cal2026_viewMode', viewMode); 
             const wrapper = document.getElementById('calendarWrapper');
             wrapper.classList.add('fade');
             
@@ -495,14 +503,19 @@
                 const year = currentDisplayedDate.getFullYear();
                 const month = currentDisplayedDate.getMonth();
                 const isCurrentMonth = (month === today.getMonth() && year === today.getFullYear());
+                const isPast = (year < today.getFullYear() || (year === today.getFullYear() && month < today.getMonth()));
+                const hijriText = getHijriMonthsForGregorian(year, month);
                 
                 wrapper.innerHTML = `
                     <div class="month-nav">
                         <button class="nav-btn" onclick="triggerMonthChange(-1)">❮</button>
-                        <div class="month-title">${monthNames[month]} ${year}</div>
+                        <div class="month-title">
+                            ${monthNames[month]} ${year}
+                            <span class="hijri-subtitle">${hijriText}</span>
+                        </div>
                         <button class="nav-btn" onclick="triggerMonthChange(1)">❯</button>
                     </div>
-                    <div class="month-wrapper ${isCurrentMonth ? 'is-current' : ''}">
+                    <div class="month-wrapper ${isCurrentMonth ? 'is-current' : ''} ${isPast ? 'past-month' : ''}">
                         ${generateMonthHTML(year, month)}
                     </div>
                 `;
@@ -516,9 +529,15 @@
                 let listHTML = '';
                 for(let m = 0; m < 12; m++) {
                     const isCurrentMonth = (m === today.getMonth() && year === today.getFullYear());
+                    const isPast = (year < today.getFullYear() || (year === today.getFullYear() && m < today.getMonth()));
+                    const hijriText = getHijriMonthsForGregorian(year, m);
+
                     listHTML += `
-                        <div class="month-wrapper ${isCurrentMonth ? 'is-current' : ''}" id="month-block-${m}">
-                            <div class="month-title-header ${isCurrentMonth ? 'is-current' : ''}">${monthNames[m]} ${year}</div>
+                        <div class="month-wrapper ${isCurrentMonth ? 'is-current' : ''} ${isPast ? 'past-month' : ''}" id="month-block-${m}">
+                            <div class="month-title-header ${isCurrentMonth ? 'is-current' : ''}">
+                                ${monthNames[m]} ${year}
+                                <span class="hijri-subtitle">${hijriText}</span>
+                            </div>
                             ${generateMonthHTML(year, m)}
                         </div>
                     `;
@@ -534,7 +553,6 @@
                     else fab.classList.remove('visible');
                 };
 
-                // التمرير التلقائي للشهر الحالي عند التحميل الأول
                 if(isInitialLoad) {
                     setTimeout(() => {
                         const el = document.getElementById(`month-block-${today.getMonth()}`);
@@ -545,14 +563,18 @@
             }
         }
 
-        // --- النافذة المنبثقة والألوان ---
+        // --- النافذة والألوان ---
         function openDayModal(dateObj, dateKey) {
             activeDayKey = dateKey;
             const dayData = db[dateKey] || { todos: [], notes: '', color: '', table: null };
             
             const dayName = dateObj.toLocaleDateString('ar-SA', { weekday: 'long' });
+            // اسم الشهر الهجري في النافذة أيضاً
+            const hijriMonthLong = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { month: 'long', year:'numeric'}).format(dateObj);
+            const hijriDayStr = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {day: 'numeric'}).format(dateObj);
+
             document.getElementById('modalGregDate').innerText = `${dayName}، ${dateObj.getDate()} ${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
-            document.getElementById('modalHijriDate').innerText = getHijriFormat(dateObj);
+            document.getElementById('modalHijriDate').innerText = `${hijriDayStr} ${hijriMonthLong}`;
             document.getElementById('notesInput').value = dayData.notes || '';
 
             activeColor = dayData.color || '';
@@ -646,7 +668,7 @@
             saveToDb();
         }
 
-        // --- الجداول الذكية ---
+        // --- الجداول ---
         function renderTableUI() {
             const containerWrapper = document.getElementById('tableContainerWrapper');
             const container = document.getElementById('tableContainer');
@@ -767,7 +789,6 @@
             }
         }
 
-        // --- الحفظ العام والتصدير ---
         function saveDayData() {
             if (!db[activeDayKey]) db[activeDayKey] = { todos: [] };
             db[activeDayKey].notes = document.getElementById('notesInput').value;
